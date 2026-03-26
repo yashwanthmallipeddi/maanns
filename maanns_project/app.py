@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = 'maanns_super_secret_key_2024'
 
 # ─── Connect to MongoDB ────────────────────────────────────────────────────────
-client = MongoClient ("mongodb+srv://yashmallipeddi22_db_user:yashwanth2208@cluster0.wluxyyp.mongodb.net/maans_db?retryWrites=true&w=majority")
+client = MongoClient("mongodb+srv://yashmallipeddi22_db_user:yashwanth2208@cluster0.wluxyyp.mongodb.net/maans_db?retryWrites=true&w=majority")
 db = client['maans_db']
 users_col    = db['users']
 products_col = db['products']
