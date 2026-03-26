@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}Shop — MAANNS{% endblock %}
+
+{% block content %}
+
+<!-- Page Hero -->
+<div class="page-hero">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <h1>{% if active == 'all' %}All Products{% else %}{{ active | title }}{% endif %}</h1>
+    <p>Premium Menswear — Just For You</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+
+    <!-- Category Filter Tabs -->
+    <div class="filter-tabs">
+      {% set cat_labels = {
+          'all': 'All',
+          'shirts': 'Shirts',
+          'tshirts': 'T-Shirts',
+          'pants': 'Pants',
+          'tracks': 'Tracks',
+          'shorts': 'Shorts'
+      } %}
+      {% for cat in categories %}
+        <a href="{{ url_for('products', category=cat) }}"
+           class="filter-tab {% if active == cat %}active{% endif %}">
+          {{ cat_labels[cat] }}
+        </a>
+      {% endfor %}
+    </div>
+
+    <!-- Products Count -->
+    <p class="results-count">
+      Showing <strong>{{ products | length }}</strong> product{{ 's' if products | length != 1 }}
+      {% if active != 'all' %} in <strong>{{ active | title }}</strong>{% endif %}
+    </p>
+
+    <!-- Products Grid -->
+    {% if products %}
+    <div class="products-grid">
+      {% for product in products %}
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img src="{{ product.image }}" alt="{{ product.name }}" loading="lazy"/>
+          <div class="product-actions">
+            <form action="{{ url_for('add_to_cart', product_id=product._id) }}" method="POST">
+              <button type="submit" class="btn-add-cart">
+                <i class="fa fa-shopping-bag"></i> Add to Cart
+              </button>
+            </form>
+          </div>
+          {% if product.get('old_price') %}
+            <span class="badge-sale">SALE</span>
+          {% endif %}
+        </div>
+        <div class="product-info">
+          <span class="product-category">{{ product.category | upper }}</span>
+          <h3 class="product-name">{{ product.name }}</h3>
+          <p class="product-desc">{{ product.description }}</p>
+          <div class="product-price">
+            <span class="price-current">₹{{ product.price }}</span>
+            {% if product.get('old_price') %}
+              <span class="price-old">₹{{ product.old_price }}</span>
+              <span class="price-save">Save ₹{{ product.old_price - product.price }}</span>
+            {% endif %}
+          </div>
+          {% if product.get('sizes') %}
+          <div class="size-tags">
+            {% for size in product.sizes %}
+              <span class="size-tag">{{ size }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+      <!-- Empty State -->
+      <div class="empty-state">
+        <i class="fa fa-box-open"></i>
+        <h3>No products found</h3>
+        <p>We couldn't find any products in this category.</p>
+        <a href="{{ url_for('products') }}" class="btn-gold">View All Products</a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}

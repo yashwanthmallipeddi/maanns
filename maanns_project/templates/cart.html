@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block title %}My Cart — MAANNS{% endblock %}
+
+{% block content %}
+
+<div class="page-hero page-hero-sm">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <h1>My Cart</h1>
+    <p>{{ cart_items | length }} item{{ 's' if cart_items | length != 1 }} in your bag</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+
+    {% if cart_items %}
+    <div class="cart-layout">
+
+      <!-- ── Cart Items ── -->
+      <div class="cart-items">
+        <h2 class="cart-section-title">Your Items</h2>
+
+        {% for item in cart_items %}
+        <div class="cart-item">
+          <div class="cart-item-img">
+            <img src="{{ item.image }}" alt="{{ item.name }}"/>
+          </div>
+          <div class="cart-item-details">
+            <h3>{{ item.name }}</h3>
+            <p class="cart-item-price">₹{{ item.price }} each</p>
+
+            <!-- Quantity Controls -->
+            <div class="qty-controls">
+              <a href="{{ url_for('update_cart', item_id=item._id, action='dec') }}" class="qty-btn">−</a>
+              <span class="qty-num">{{ item.quantity }}</span>
+              <a href="{{ url_for('update_cart', item_id=item._id, action='inc') }}" class="qty-btn">+</a>
+            </div>
+          </div>
+          <div class="cart-item-right">
+            <p class="cart-subtotal">₹{{ item.price * item.quantity }}</p>
+            <a href="{{ url_for('remove_from_cart', item_id=item._id) }}" class="remove-btn">
+              <i class="fa fa-trash"></i> Remove
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- ── Order Summary & Checkout ── -->
+      <div class="cart-summary">
+        <h2 class="cart-section-title">Order Summary</h2>
+
+        <div class="summary-box">
+          <div class="summary-row">
+            <span>Subtotal ({{ cart_items | length }} items)</span>
+            <span>₹{{ total }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span class="text-gold">FREE</span>
+          </div>
+          <div class="summary-row summary-total">
+            <span>Total</span>
+            <span>₹{{ total }}</span>
+          </div>
+        </div>
+
+        <!-- Checkout Form -->
+        <form action="{{ url_for('checkout') }}" method="POST" class="checkout-form">
+          <h3 class="checkout-form-title">Delivery Details</h3>
+
+          <div class="form-group">
+            <label>Delivery Address</label>
+            <textarea name="address" placeholder="Enter your full delivery address..." required rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <div class="input-icon-wrap">
+              <i class="fa fa-phone"></i>
+              <input type="tel" name="phone" placeholder="10-digit mobile number" required/>
+            </div>
+          </div>
+
+          <div class="payment-notice">
+            <i class="fa fa-lock"></i>
+            <span>Cash on Delivery — Safe & Secure</span>
+          </div>
+
+          <button type="submit" class="btn-place-order">
+            Place Order <i class="fa fa-check-circle"></i>
+          </button>
+        </form>
+
+        <a href="{{ url_for('products') }}" class="continue-shopping">
+          <i class="fa fa-arrow-left"></i> Continue Shopping
+        </a>
+      </div>
+
+    </div>
+
+    {% else %}
+
+    <!-- Empty Cart -->
+    <div class="empty-state">
+      <i class="fa fa-shopping-bag"></i>
+      <h3>Your cart is empty</h3>
+      <p>Looks like you haven't added anything yet. Start shopping!</p>
+      <a href="{{ url_for('products') }}" class="btn-gold">Shop Now</a>
+    </div>
+
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}

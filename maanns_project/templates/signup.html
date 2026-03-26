@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Sign Up — MAANNS{% endblock %}
+
+{% block content %}
+
+<div class="auth-page">
+
+  <!-- Left Panel: Brand Visual -->
+  <div class="auth-visual auth-visual-signup">
+    <div class="auth-visual-overlay"></div>
+    <div class="auth-visual-content">
+      <h1 class="auth-brand">MAANNS</h1>
+      <p class="auth-tagline">"Crafted for the<br>Man Who Knows<br>His Worth."</p>
+    </div>
+  </div>
+
+  <!-- Right Panel: Form -->
+  <div class="auth-form-panel">
+    <div class="auth-form-wrap">
+
+      <div class="auth-logo">
+        <a href="{{ url_for('home') }}" class="brand-logo">MAANNS</a>
+      </div>
+
+      <h2 class="auth-title">Create Account</h2>
+      <p class="auth-subtitle">Join the MAANNS community today</p>
+
+      <form action="{{ url_for('signup') }}" method="POST" class="auth-form">
+
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <div class="input-icon-wrap">
+            <i class="fa fa-id-card"></i>
+            <input type="text" id="name" name="name"
+                   placeholder="Your full name" required/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <div class="input-icon-wrap">
+            <i class="fa fa-envelope"></i>
+            <input type="email" id="email" name="email"
+                   placeholder="your@email.com" required/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <div class="input-icon-wrap">
+            <i class="fa fa-user"></i>
+            <input type="text" id="username" name="username"
+                   placeholder="Choose a username" required/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-icon-wrap">
+            <i class="fa fa-lock"></i>
+            <input type="password" id="password" name="password"
+                   placeholder="Create a strong password" required minlength="8"/>
+            <span class="toggle-pw" onclick="togglePassword('password')">
+              <i class="fa fa-eye"></i>
+            </span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-auth">Create Account <i class="fa fa-arrow-right"></i></button>
+
+      </form>
+
+      <p class="auth-switch">
+        Already have an account? <a href="{{ url_for('login') }}">Login</a>
+      </p>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

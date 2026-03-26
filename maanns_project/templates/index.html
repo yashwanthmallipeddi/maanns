@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% block title %}Home — Wear Your Confidence{% endblock %}
+
+{% block content %}
+
+<!-- ══════════════ HERO SECTION ══════════════ -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">New Collection 2024</p>
+    <h1 class="hero-title">The New Language<br>of <span class="gold-text">Fashion</span></h1>
+    <p class="hero-sub">Premium menswear crafted for the bold, the sharp, the modern man.</p>
+    <div class="hero-btns">
+      <a href="{{ url_for('products') }}" class="btn-gold">Shop Now</a>
+      <a href="{{ url_for('category', cat_name='shirts') }}" class="btn-outline">Explore Shirts</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ MARQUEE STRIP ══════════════ -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span>SHIRTS &nbsp;✦&nbsp;</span>
+    <span>T-SHIRTS &nbsp;✦&nbsp;</span>
+    <span>PANTS &nbsp;✦&nbsp;</span>
+    <span>TRACKS &nbsp;✦&nbsp;</span>
+    <span>SHORTS &nbsp;✦&nbsp;</span>
+    <span>NEW ARRIVALS &nbsp;✦&nbsp;</span>
+    <span>SHIRTS &nbsp;✦&nbsp;</span>
+    <span>T-SHIRTS &nbsp;✦&nbsp;</span>
+    <span>PANTS &nbsp;✦&nbsp;</span>
+    <span>TRACKS &nbsp;✦&nbsp;</span>
+    <span>SHORTS &nbsp;✦&nbsp;</span>
+    <span>MAANNS COLLECTION &nbsp;✦&nbsp;</span>
+  </div>
+</div>
+
+<!-- ══════════════ CATEGORIES GRID ══════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Browse By</p>
+      <h2 class="section-title">Categories</h2>
+    </div>
+
+    <div class="categories-grid">
+      <a href="{{ url_for('category', cat_name='shirts') }}" class="cat-card cat-shirts">
+        <div class="cat-overlay"></div>
+        <div class="cat-info">
+          <i class="fa fa-tshirt"></i>
+          <h3>Shirts</h3>
+          <p>Formal &amp; Casual</p>
+        </div>
+      </a>
+      <a href="{{ url_for('category', cat_name='tshirts') }}" class="cat-card cat-tshirts">
+        <div class="cat-overlay"></div>
+        <div class="cat-info">
+          <i class="fa fa-tshirt"></i>
+          <h3>T-Shirts</h3>
+          <p>Everyday Wear</p>
+        </div>
+      </a>
+      <a href="{{ url_for('category', cat_name='pants') }}" class="cat-card cat-pants">
+        <div class="cat-overlay"></div>
+        <div class="cat-info">
+          <i class="fa fa-user"></i>
+          <h3>Pants</h3>
+          <p>Jeans, Chinos &amp; More</p>
+        </div>
+      </a>
+      <a href="{{ url_for('category', cat_name='tracks') }}" class="cat-card cat-tracks">
+        <div class="cat-overlay"></div>
+        <div class="cat-info">
+          <i class="fa fa-running"></i>
+          <h3>Tracks</h3>
+          <p>Sport &amp; Comfort</p>
+        </div>
+      </a>
+      <a href="{{ url_for('category', cat_name='shorts') }}" class="cat-card cat-shorts">
+        <div class="cat-overlay"></div>
+        <div class="cat-info">
+          <i class="fa fa-umbrella-beach"></i>
+          <h3>Shorts</h3>
+          <p>Casual &amp; Training</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ QUOTE BANNER ══════════════ -->
+<section class="quote-banner">
+  <div class="container">
+    <div class="quote-content">
+      <span class="quote-mark">"</span>
+      <p id="rotatingQuote">{{ quotes[0] }}</p>
+      <span class="quote-mark">"</span>
+    </div>
+    <div class="quote-dots">
+      {% for q in quotes %}
+        <span class="qdot {% if loop.index0 == 0 %}active{% endif %}" data-index="{{ loop.index0 }}"></span>
+      {% endfor %}
+    </div>
+  </div>
+  <script>
+    // Pass quotes from Flask to JS
+    const QUOTES = {{ quotes | tojson }};
+  </script>
+</section>
+
+<!-- ══════════════ FEATURED PRODUCTS ══════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Handpicked For You</p>
+      <h2 class="section-title">Featured Products</h2>
+    </div>
+
+    <div class="products-grid">
+      {% for product in featured %}
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img src="{{ product.image }}" alt="{{ product.name }}" loading="lazy"/>
+          <div class="product-actions">
+            <form action="{{ url_for('add_to_cart', product_id=product._id) }}" method="POST">
+              <button type="submit" class="btn-add-cart">
+                <i class="fa fa-shopping-bag"></i> Add to Cart
+              </button>
+            </form>
+          </div>
+          {% if product.get('old_price') %}
+            <span class="badge-sale">SALE</span>
+          {% endif %}
+        </div>
+        <div class="product-info">
+          <span class="product-category">{{ product.category | upper }}</span>
+          <h3 class="product-name">{{ product.name }}</h3>
+          <div class="product-price">
+            <span class="price-current">₹{{ product.price }}</span>
+            {% if product.get('old_price') %}
+              <span class="price-old">₹{{ product.old_price }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="center-btn">
+      <a href="{{ url_for('products') }}" class="btn-gold">View All Products</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ WHY MAANNS SECTION ══════════════ -->
+<section class="section why-section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Why Choose Us</p>
+      <h2 class="section-title">The MAANNS Promise</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon"><i class="fa fa-gem"></i></div>
+        <h3>Premium Quality</h3>
+        <p>Carefully sourced fabrics and skilled craftsmanship in every piece.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fa fa-truck"></i></div>
+        <h3>Fast Delivery</h3>
+        <p>Free shipping pan India. Delivered to your door in 3–5 days.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fa fa-undo"></i></div>
+        <h3>Easy Returns</h3>
+        <p>Not the right fit? Return within 7 days, no questions asked.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fa fa-lock"></i></div>
+        <h3>Secure Payments</h3>
+        <p>100% safe and encrypted transactions. Your data is protected.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CTA BANNER ══════════════ -->
+<section class="cta-banner">
+  <div class="cta-content">
+    <h2>Dress Sharp. <span class="gold-text">Think Bold.</span></h2>
+    <p>New arrivals every week. Be the first to shop.</p>
+    {% if not session.get('username') %}
+      <a href="{{ url_for('signup') }}" class="btn-gold">Create Account</a>
+    {% else %}
+      <a href="{{ url_for('products') }}" class="btn-gold">Shop Now</a>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

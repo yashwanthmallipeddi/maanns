@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Login — MAANNS{% endblock %}
+
+{% block content %}
+
+<div class="auth-page">
+
+  <!-- Left Panel: Brand Visual -->
+  <div class="auth-visual">
+    <div class="auth-visual-overlay"></div>
+    <div class="auth-visual-content">
+      <h1 class="auth-brand">MAANNS</h1>
+      <p class="auth-tagline">"Dress Sharp.<br>Think Bold."</p>
+    </div>
+  </div>
+
+  <!-- Right Panel: Form -->
+  <div class="auth-form-panel">
+    <div class="auth-form-wrap">
+
+      <div class="auth-logo">
+        <a href="{{ url_for('home') }}" class="brand-logo">MAANNS</a>
+      </div>
+
+      <h2 class="auth-title">Welcome Back</h2>
+      <p class="auth-subtitle">Login to your MAANNS account</p>
+
+      <form action="{{ url_for('login') }}" method="POST" class="auth-form">
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <div class="input-icon-wrap">
+            <i class="fa fa-user"></i>
+            <input type="text" id="username" name="username"
+                   placeholder="Enter your username" required autocomplete="username"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-icon-wrap">
+            <i class="fa fa-lock"></i>
+            <input type="password" id="password" name="password"
+                   placeholder="Enter your password" required/>
+            <span class="toggle-pw" onclick="togglePassword('password')">
+              <i class="fa fa-eye"></i>
+            </span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-auth">Login <i class="fa fa-arrow-right"></i></button>
+
+      </form>
+
+      <p class="auth-switch">
+        Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a>
+      </p>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

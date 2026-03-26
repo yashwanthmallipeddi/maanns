@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}My Orders — MAANNS{% endblock %}
+
+{% block content %}
+
+<div class="page-hero page-hero-sm">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <h1>My Orders</h1>
+    <p>Your order history with Maans</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+
+    {% if orders %}
+
+    <div class="orders-list">
+      {% for order in orders %}
+      <div class="order-card">
+
+        <!-- Order Header -->
+        <div class="order-header">
+          <div class="order-meta">
+            <span class="order-id">Order #{{ loop.index }}/{{ order._id | string | truncate(8, True, '') }}</span>
+            <span class="order-date">
+              <i class="fa fa-calendar"></i>
+              {{ order.date.strftime('%d %b %Y, %I:%M %p') if order.date else 'N/A' }}
+            </span>
+          </div>
+          <div class="order-status-wrap">
+            <span class="order-status status-placed">{{ order.status }}</span>
+            <span class="order-total-label">₹{{ order.total }}</span>
+          </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="order-items">
+          {% for item in order.items %}
+          <div class="order-item">
+            <img src="{{ item.image }}" alt="{{ item.name }}"/>
+            <div class="order-item-info">
+              <p class="order-item-name">{{ item.name }}</p>
+              <p class="order-item-qty">Qty: {{ item.quantity }} × ₹{{ item.price }}</p>
+            </div>
+            <p class="order-item-subtotal">₹{{ item.subtotal }}</p>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Order Footer -->
+        <div class="order-footer">
+          <div class="order-address">
+            <i class="fa fa-map-marker-alt"></i>
+            <span>{{ order.get('address', 'Address not available') }}</span>
+          </div>
+          <div class="order-summary-row">
+            <span>Total Paid:</span>
+            <strong class="gold-text">₹{{ order.total }}</strong>
+          </div>
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="center-btn" style="margin-top:2rem;">
+      <a href="{{ url_for('products') }}" class="btn-gold">Continue Shopping</a>
+    </div>
+
+    {% else %}
+
+    <!-- No Orders Yet -->
+    <div class="empty-state">
+      <i class="fa fa-box-open"></i>
+      <h3>No orders yet</h3>
+      <p>You haven't placed any orders. Start shopping to see your history here.</p>
+      <a href="{{ url_for('products') }}" class="btn-gold">Shop Now</a>
+    </div>
+
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}
